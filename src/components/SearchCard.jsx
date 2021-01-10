@@ -3,7 +3,15 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 
-const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photoCount = 0 }) => {
+const SearchCard = ({
+  photoUrl = '',
+  handle = '',
+  location = '',
+  age = 99,
+  photoCount = 0,
+  id = '',
+  onClick,
+}) => {
   const stCardContainer = css`
     display: flex;
     justify-content: center;
@@ -19,6 +27,12 @@ const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photo
       cursor: pointer;
       filter: brightness(80%) saturate(80%);
     }
+
+    &:active {
+      filter: brightness(110%) saturate(110%);
+    }
+    padding: 0;
+    outline: none;
   `;
 
   const stAvatar = css`
@@ -65,9 +79,13 @@ const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photo
     }
   `;
 
+  const handleCardClick = (id) => {
+    onClick(id);
+  };
+
   return (
     <div css={stCardContainer}>
-      <div css={stCard}>
+      <button css={stCard} onClick={() => handleCardClick(id)}>
         <div css={stAvatar}>
           <img src={photoUrl} alt="potential date"></img>
           <div css={stDashBoardContainer}>
@@ -82,7 +100,7 @@ const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photo
             </div>
           </div>
         </div>
-      </div>
+      </button>
     </div>
   );
 };

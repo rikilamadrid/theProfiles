@@ -8,6 +8,7 @@ export const ProfileContext = createContext({
 function ProfilesReducer(state, action) {
   let profiles;
   let loading;
+  let selectedProfile;
 
   switch (action.type) {
     case 'ascending':
@@ -29,6 +30,10 @@ function ProfilesReducer(state, action) {
       profiles = action.payload;
       return { loading, profiles };
 
+    case 'selectedProfile':
+      selectedProfile = action.payload;
+      return { selectedProfile };
+
     default:
       throw new Error();
   }
@@ -38,6 +43,7 @@ const ProfilesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(ProfilesReducer, {
     profiles: [],
     loading: true,
+    selectedProfile: null,
   });
 
   const fetchProfiles = async () => {
@@ -46,12 +52,17 @@ const ProfilesContextProvider = ({ children }) => {
     dispatch({ type: 'fetchedProfiles', payload: data });
   };
 
+  const fetchProfile = async (id) => {
+    const { data } = await axios.get(`/api/profiles/${id}`);
+    dispatch({ type: 'selectedProfile', payload: data });
+  };
+
   useEffect(() => {
     fetchProfiles();
   }, []);
 
   return (
-    <ProfileContext.Provider value={{ ...state, dispatch, fetchProfiles }}>
+    <ProfileContext.Provider value={{ ...state, dispatch, fetchProfiles, fetchProfile }}>
       {children}
     </ProfileContext.Provider>
   );

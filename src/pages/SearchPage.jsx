@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { ProfileContext } from '../components/ProfilesContextProvider';
+import { useHistory } from 'react-router-dom';
+import { ProfileContext } from '../context/ProfilesContextProvider';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 import MinimalButton from '../components/MinimalButton';
 import Toggle from '../components/Toggle';
-import Header from '../components/Header';
 import SearchCard from '../components/SearchCard';
 
 const SearchPage = () => {
+  const { profiles = [], loading, dispatch, fetchProfiles, fetchProfile } = useContext(
+    ProfileContext
+  );
   const [counter, setCounter] = useState(10);
   const [enableCounter, setEnableCounter] = useState(true);
   const counterRef = useRef();
+  let history = useHistory();
 
   const handleSortAscending = () => {
     dispatch({ type: 'ascending' });
@@ -42,17 +46,10 @@ const SearchPage = () => {
     grid-gap: 16px;
   `;
 
-  const stCounterButton = css`
-    background-color: none;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 9px 12px 8px 12px;
-    outline: 0;
-
-    &:hover {
-      filter: brightness(80%) saturate(80%);
-    }
-  `;
+  const handleProfileClick = async (id) => {
+    fetchProfile(id);
+    history.push(`profiles/${id}`);
+  };
 
   const onChangeHandler = () => {
     setCounter(10);
@@ -60,15 +57,24 @@ const SearchPage = () => {
     clearInterval(counterRef.current);
   };
 
-  const { profiles = [], loading, dispatch, fetchProfiles } = useContext(ProfileContext);
-
-  useEffect(() => {
+  const setFetchInterval = () => {
     if (enableCounter === true) {
       function tick() {
         setCounter((prevState) => prevState - 1);
       }
       counterRef.current = setInterval(() => tick(), 1000);
     }
+  };
+
+  useEffect(() => {
+    if (history.action === 'POP') {
+      setCounter(10);
+      fetchProfiles();
+    }
+  }, [history]);
+
+  useEffect(() => {
+    setFetchInterval();
   }, [enableCounter]);
 
   useEffect(() => {
@@ -76,11 +82,10 @@ const SearchPage = () => {
       setCounter(10);
       fetchProfiles();
     }
-  }, [counter]);
+  }, [counter, fetchProfiles]);
 
   return (
     <div>
-      <Header />
       <main css={stMainContainer}>
         <div css={stKeypad}>
           <div>
@@ -110,6 +115,8 @@ const SearchPage = () => {
                   location={profile.location}
                   age={profile.age}
                   photoCount={profile.photoCount}
+                  id={profile.id}
+                  onClick={handleProfileClick}
                 />
               ))}
         </div>
