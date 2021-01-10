@@ -1,97 +1,86 @@
 import React from 'react';
 
-const styles = {
-  card: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    position: 'relative',
-    width: '200px',
-    height: '200px',
-  },
-};
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from '@emotion/react';
 
-export default class Search extends React.PureComponent {
-  render() {
-    const { photoUrl = '', handle = '', location = '', age = 99, photoCount = 0 } = this.props;
+const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photoCount = 0 }) => {
+  const stCardContainer = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
 
-    return (
-      <div style={styles.card}>
-        <div
-          style={{
-            border: '1px solid lightgray',
-            borderRadius: 8,
-            boxShadow: '0 3px 6px lightgray, 0 3px 6px',
-            overflow: 'hidden',
-          }}
-        >
-          <div style={styles.avatar}>
-            <img src={photoUrl} alt="potential date"></img>
-            <div
-              style={{
-                position: 'absolute',
-                width: '100%',
-                bottom: '0',
-                borderRadius: 'inherit',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  margin: 8,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-end',
-                  position: 'relative',
-                }}
-              >
-                <div
-                  style={{
-                    color: 'white',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                  }}
-                >
-                  <h6 style={{ fontSize: '16px ' }}>
-                    <div style={{ display: 'flex', marginBottom: '4px', alignItems: 'center' }}>
-                      {handle}
-                    </div>
-                  </h6>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        marginBottom: '4px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <span>{location ? `${age} • ${location}` : age}</span>
-                    </div>
-                    <div style={{ display: 'inline-block', height: '15px' }}>
-                      {photoCount > 1 && (
-                        <div>
-                          <div style={{ marginRight: '4px' }}>
-                            <span color="white">{photoCount}</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+  const stCard = css`
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px lightgray, 0 3px 6px;
+    overflow: hidden;
+  `;
+
+  const stAvatar = css`
+    position: relative;
+    width: 200px;
+    height: 200px;
+  `;
+
+  const stDashBoardContainer = css`
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border-radius: inherit;
+    overflow: hidden;
+  `;
+
+  const stDashBoard = css`
+    margin: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  `;
+
+  const stDetailsContainer = css`
+    color: white;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  `;
+
+  const stHandle = css`
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+  `;
+
+  const stAgeAndLocationContainer = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    > p {
+      margin: 0 0.5rem 0.5rem 0;
+    }
+  `;
+
+  return (
+    <div css={stCardContainer}>
+      <div css={stCard}>
+        <div css={stAvatar}>
+          <img src={photoUrl} alt="potential date"></img>
+          <div css={stDashBoardContainer}>
+            <div css={stDashBoard}>
+              <div css={stDetailsContainer}>
+                <h6 css={stHandle}>{handle}</h6>
+                <div css={stAgeAndLocationContainer}>
+                  <p>{location ? `${age} • ${location}` : age}</p>
+                  {photoCount > 1 && <p>{photoCount}</p>}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default SearchCard;

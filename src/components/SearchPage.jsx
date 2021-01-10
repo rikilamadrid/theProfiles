@@ -1,67 +1,74 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ProfileContext } from './ProfilesContextProvider';
+
+/** @jsxImportSource @emotion/react */
+import { css, jsx } from '@emotion/react';
 import MinimalButton from './MinimalButton';
 import Header from './Header';
 import SearchCard from './SearchCard';
 
-class SearchPage extends React.Component {
-  static contextType = ProfileContext;
-
-  handleSortAscending = () => {
-    this.context.dispatch({ type: 'ascending' });
+const SearchPage = () => {
+  const handleSortAscending = () => {
+    dispatch({ type: 'ascending' });
   };
 
-  handleSortDescending = () => {
-    this.context.dispatch({ type: 'descending' });
+  const handleSortDescending = () => {
+    dispatch({ type: 'descending' });
   };
 
-  render() {
-    console.log('lamadrid ProfileContext', this.context);
-    const { profiles = [], loading } = this.context;
+  const stMainContainer = css`
+    margin: 24px;
+  `;
 
-    return (
-      <React.Fragment>
-        <Header />
+  const stKeypad = css`
+    display: flex;
+    justify-content: flex-end;
+  `;
 
-        <main style={{ margin: 24 }}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <MinimalButton disabled>
-              <img src="filter.svg" width={22} alt="filter" />
-            </MinimalButton>
+  const stCardContainer = css`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 16px;
+  `;
 
-            <MinimalButton onClick={this.handleSortAscending}>
-              <img src="./ascending.svg" width={22} alt="Sort ascending" />
-            </MinimalButton>
+  const { profiles = [], loading, dispatch } = useContext(ProfileContext);
 
-            <MinimalButton onClick={this.handleSortDescending}>
-              <img src="./descending.svg" width={22} alt="Sort descending" />
-            </MinimalButton>
-          </div>
+  return (
+    <div>
+      <Header />
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr 1fr',
-              gridGap: '16px',
-            }}
-          >
-            {loading
-              ? '...loading'
-              : profiles.map((profile) => (
-                  <SearchCard
-                    key={profile.id}
-                    photoUrl={profile.photoUrl}
-                    handle={profile.handle}
-                    location={profile.location}
-                    age={profile.age}
-                    photoCount={profile.photoCount}
-                  />
-                ))}
-          </div>
-        </main>
-      </React.Fragment>
-    );
-  }
-}
+      <main css={stMainContainer}>
+        <div css={stKeypad}>
+          <MinimalButton disabled>
+            <img src="filter.svg" width={22} alt="filter" />
+          </MinimalButton>
+
+          <MinimalButton onClick={handleSortAscending}>
+            <img src="./ascending.svg" width={22} alt="Sort ascending" />
+          </MinimalButton>
+
+          <MinimalButton onClick={handleSortDescending}>
+            <img src="./descending.svg" width={22} alt="Sort descending" />
+          </MinimalButton>
+        </div>
+
+        <div css={stCardContainer}>
+          {loading
+            ? '...loading'
+            : profiles.map((profile) => (
+                <SearchCard
+                  key={profile.id}
+                  photoUrl={profile.photoUrl}
+                  handle={profile.handle}
+                  location={profile.location}
+                  age={profile.age}
+                  photoCount={profile.photoCount}
+                />
+              ))}
+        </div>
+      </main>
+    </div>
+  );
+};
 
 export default SearchPage;

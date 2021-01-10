@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useReducer, useEffect, createContext } from 'react';
 // import mockProfiles from '../profiles.json';
 import axios from 'axios';
 
-export const ProfileContext = React.createContext({
+export const ProfileContext = createContext({
   profiles: [],
 });
 
@@ -35,13 +35,13 @@ function ProfilesReducer(state, action) {
   }
 }
 
-function ProfilesContextProvider({ children }) {
-  const [state, dispatch] = React.useReducer(ProfilesReducer, {
+const ProfilesContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(ProfilesReducer, {
     profiles: [],
     loading: true,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch({ type: 'fetchingProfiles' });
     const fetchProfiles = async () => {
       const { data } = await axios.get('/api/profiles');
@@ -53,6 +53,6 @@ function ProfilesContextProvider({ children }) {
   return (
     <ProfileContext.Provider value={{ ...state, dispatch }}>{children}</ProfileContext.Provider>
   );
-}
+};
 
 export default ProfilesContextProvider;
