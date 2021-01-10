@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { ProfileContext } from './ProfilesContextProvider';
+import { ProfileContext } from '../components/ProfilesContextProvider';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
-import MinimalButton from './MinimalButton';
-import Toggle from './Toggle';
-import Header from './Header';
-import SearchCard from './SearchCard';
+import MinimalButton from '../components/MinimalButton';
+import Toggle from '../components/Toggle';
+import Header from '../components/Header';
+import SearchCard from '../components/SearchCard';
 
 const SearchPage = () => {
   const [counter, setCounter] = useState(10);
