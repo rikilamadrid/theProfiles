@@ -36,22 +36,18 @@ const SearchPage = () => {
   return (
     <div>
       <Header />
-
       <main css={stMainContainer}>
         <div css={stKeypad}>
           <MinimalButton disabled>
             <img src="filter.svg" width={22} alt="filter" />
           </MinimalButton>
-
           <MinimalButton onClick={handleSortAscending}>
             <img src="./ascending.svg" width={22} alt="Sort ascending" />
           </MinimalButton>
-
           <MinimalButton onClick={handleSortDescending}>
             <img src="./descending.svg" width={22} alt="Sort descending" />
           </MinimalButton>
         </div>
-
         <div css={stCardContainer}>
           {loading
             ? '...loading'

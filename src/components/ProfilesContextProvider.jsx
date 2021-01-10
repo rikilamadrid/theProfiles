@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect, createContext } from 'react';
-// import mockProfiles from '../profiles.json';
 import axios from 'axios';
 
 export const ProfileContext = createContext({
