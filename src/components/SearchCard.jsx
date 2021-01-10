@@ -15,6 +15,10 @@ const SearchCard = ({ photoUrl = '', handle = '', location = '', age = 99, photo
     border-radius: 8px;
     box-shadow: 0 3px 6px lightgray, 0 3px 6px;
     overflow: hidden;
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%) saturate(80%);
+    }
   `;
 
   const stAvatar = css`

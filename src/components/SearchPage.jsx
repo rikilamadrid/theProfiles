@@ -1,13 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ProfileContext } from './ProfilesContextProvider';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 import MinimalButton from './MinimalButton';
+import Toggle from './Toggle';
 import Header from './Header';
 import SearchCard from './SearchCard';
 
 const SearchPage = () => {
+  const [counter, setCounter] = useState(10);
+  const [enableCounter, setEnableCounter] = useState(true);
+  const counterRef = useRef();
+
   const handleSortAscending = () => {
     dispatch({ type: 'ascending' });
   };
@@ -22,7 +27,13 @@ const SearchPage = () => {
 
   const stKeypad = css`
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  `;
+
+  const stFilteringButtons = css`
+    display: flex;
+    justify-content: space-between;
   `;
 
   const stCardContainer = css`
@@ -31,22 +42,62 @@ const SearchPage = () => {
     grid-gap: 16px;
   `;
 
-  const { profiles = [], loading, dispatch } = useContext(ProfileContext);
+  const stCounterButton = css`
+    background-color: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 9px 12px 8px 12px;
+    outline: 0;
+
+    &:hover {
+      filter: brightness(80%) saturate(80%);
+    }
+  `;
+
+  const onChangeHandler = () => {
+    setCounter(10);
+    setEnableCounter((prevState) => !prevState);
+    clearInterval(counterRef.current);
+  };
+
+  const { profiles = [], loading, dispatch, fetchProfiles } = useContext(ProfileContext);
+
+  useEffect(() => {
+    if (enableCounter === true) {
+      function tick() {
+        setCounter((prevState) => prevState - 1);
+      }
+      counterRef.current = setInterval(() => tick(), 1000);
+    }
+  }, [enableCounter]);
+
+  useEffect(() => {
+    if (counter === 0) {
+      setCounter(10);
+      fetchProfiles();
+    }
+  }, [counter]);
 
   return (
     <div>
       <Header />
       <main css={stMainContainer}>
         <div css={stKeypad}>
-          <MinimalButton disabled>
-            <img src="filter.svg" width={22} alt="filter" />
-          </MinimalButton>
-          <MinimalButton onClick={handleSortAscending}>
-            <img src="./ascending.svg" width={22} alt="Sort ascending" />
-          </MinimalButton>
-          <MinimalButton onClick={handleSortDescending}>
-            <img src="./descending.svg" width={22} alt="Sort descending" />
-          </MinimalButton>
+          <div>
+            {counter}
+            <Toggle label="Re-fetch" checked={enableCounter} onChange={onChangeHandler} />
+          </div>
+          <div css={stFilteringButtons}>
+            <MinimalButton disabled>
+              <img src="filter.svg" width={22} alt="filter" />
+            </MinimalButton>
+            <MinimalButton onClick={handleSortAscending}>
+              <img src="./ascending.svg" width={22} alt="Sort ascending" />
+            </MinimalButton>
+            <MinimalButton onClick={handleSortDescending}>
+              <img src="./descending.svg" width={22} alt="Sort descending" />
+            </MinimalButton>
+          </div>
         </div>
         <div css={stCardContainer}>
           {loading

@@ -40,17 +40,20 @@ const ProfilesContextProvider = ({ children }) => {
     loading: true,
   });
 
-  useEffect(() => {
+  const fetchProfiles = async () => {
     dispatch({ type: 'fetchingProfiles' });
-    const fetchProfiles = async () => {
-      const { data } = await axios.get('/api/profiles');
-      dispatch({ type: 'fetchedProfiles', payload: data });
-    };
+    const { data } = await axios.get('/api/profiles');
+    dispatch({ type: 'fetchedProfiles', payload: data });
+  };
+
+  useEffect(() => {
     fetchProfiles();
   }, []);
 
   return (
-    <ProfileContext.Provider value={{ ...state, dispatch }}>{children}</ProfileContext.Provider>
+    <ProfileContext.Provider value={{ ...state, dispatch, fetchProfiles }}>
+      {children}
+    </ProfileContext.Provider>
   );
 };
 
