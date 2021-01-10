@@ -7,6 +7,7 @@ import { css, jsx } from '@emotion/react';
 import MinimalButton from '../components/MinimalButton';
 import Toggle from '../components/Toggle';
 import SearchCard from '../components/SearchCard';
+import SkeletonProfile from '../skeletons/SkeletonProfile';
 
 const SearchPage = () => {
   const { profiles = [], loading, dispatch, fetchProfiles, fetchProfile } = useContext(
@@ -105,20 +106,27 @@ const SearchPage = () => {
           </div>
         </div>
         <div css={stCardContainer}>
-          {loading
-            ? '...loading'
-            : profiles.map((profile) => (
-                <SearchCard
-                  key={profile.id}
-                  photoUrl={profile.photoUrl}
-                  handle={profile.handle}
-                  location={profile.location}
-                  age={profile.age}
-                  photoCount={profile.photoCount}
-                  id={profile.id}
-                  onClick={handleProfileClick}
-                />
-              ))}
+          {loading ? (
+            <>
+              <SkeletonProfile />
+              <SkeletonProfile />
+              <SkeletonProfile />
+              <SkeletonProfile />
+            </>
+          ) : (
+            profiles.map((profile) => (
+              <SearchCard
+                key={profile.id}
+                photoUrl={profile.photoUrl}
+                handle={profile.handle}
+                location={profile.location}
+                age={profile.age}
+                photoCount={profile.photoCount}
+                id={profile.id}
+                onClick={handleProfileClick}
+              />
+            ))
+          )}
         </div>
       </main>
     </div>

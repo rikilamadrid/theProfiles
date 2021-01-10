@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { ProfileContext } from '../context/ProfilesContextProvider';
 import Button from '../components/Button';
-import { useHistory } from 'react-router-dom';
+import SkeletonProfile from '../skeletons/SkeletonProfile';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
@@ -47,7 +49,7 @@ const ProfilePage = ({ match }) => {
     <main css={stPageContainer}>
       <Button label="back" onClick={goBackHandler} />
       {loading ? (
-        '...loading'
+        <SkeletonProfile />
       ) : (
         <>
           <img css={stImage} src={selectedProfile?.photoUrl} alt="selected date" />
