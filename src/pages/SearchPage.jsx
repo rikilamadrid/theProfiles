@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ProfileContext } from '../context/ProfilesContextProvider';
 
 import MinimalButton from '../components/MinimalButton';
-import Toggle from '../components/Toggle';
+import Toggle from '../components/Toggle/Toggle';
 import SearchCard from '../components/SearchCard';
 import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
 import ascendingIcon from '../assets/ascending.svg';

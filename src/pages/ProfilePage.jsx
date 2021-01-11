@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { ProfileContext } from '../context/ProfilesContextProvider';
 
-import Button from '../components/Button';
+import Button from '../components/Button/Button';
 import SkeletonProfile from '../skeletons/SkeletonProfile';
 
 /** @jsxImportSource @emotion/react */

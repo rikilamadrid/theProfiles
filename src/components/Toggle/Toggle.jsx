@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 
-const Toggle = ({ label, onChange, checked }) => {
+const Toggle = ({ 'data-testid': dataTestId, label, onChange, checked }) => {
   const [checkedStatus, setCheckedStatus] = useState(checked);
 
   useEffect(() => {
@@ -71,7 +71,12 @@ const Toggle = ({ label, onChange, checked }) => {
 
   return (
     <label css={[stToggle, stLabel]}>
-      <input type="checkbox" checked={checkedStatus} onChange={changeHandle} />
+      <input
+        data-testid={dataTestId}
+        type="checkbox"
+        checked={!!checkedStatus}
+        onChange={changeHandle}
+      />
       {label && <span css={stLabel}>{label}</span>}
       <span className="toggle"></span>
     </label>

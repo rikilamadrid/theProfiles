@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toggle component render correctly without crashing, matching snapshot 1`] = `
+<label
+  className="css-iin6n3-Toggle"
+>
+  <input
+    checked={false}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="toggle"
+  />
+</label>
+`;
