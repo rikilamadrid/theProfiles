@@ -1,4 +1,5 @@
 import React from 'react';
+import SkeletonThumbnail from './SkeletonThumbnail';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx, keyframes } from '@emotion/react';
@@ -14,14 +15,7 @@ const SkeletonProfile = () => {
     };
   `;
 
-  const stThumbnail = css`
-    animation: ${glow} 2s infinite;
-    background-color: #c4c4c4;
-    width: 100px;
-    height: 100px;
-  `;
-
-  const stSkeletonWrapper = css`
+  const stSkeletonContainer = css`
     background-color: #f2f2f2;
     border-radius: 4px;
     margin: 20px auto;
@@ -60,11 +54,9 @@ const SkeletonProfile = () => {
   `;
 
   return (
-    <div css={stSkeletonWrapper}>
+    <div css={stSkeletonContainer}>
       <div css={stSkeletonProfile}>
-        <div>
-          <div css={[stSkeletonAvatar]}></div>
-        </div>
+        <SkeletonThumbnail />
         <div>
           <div css={stSkeletonTitle}></div>
           <div css={stSkeletonText}></div>

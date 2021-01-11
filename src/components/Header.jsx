@@ -1,4 +1,6 @@
 import React from 'react';
+import mainLogo from '../assets/logo.svg';
+
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 
@@ -10,7 +12,7 @@ const Header = () => {
 
   return (
     <header css={stHeader}>
-      <img src="./logo.svg" alt="match" width="110" />
+      <img src={mainLogo} alt="match" width="110" />
     </header>
   );
 };

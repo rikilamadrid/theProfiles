@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ProfileContext } from '../context/ProfilesContextProvider';
+import ascendingIcon from '../assets/ascending.svg';
+import descendingIcon from '../assets/descending.svg';
+import filterIcon from '../assets/filter.svg';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 import MinimalButton from '../components/MinimalButton';
 import Toggle from '../components/Toggle';
 import SearchCard from '../components/SearchCard';
-import SkeletonProfile from '../skeletons/SkeletonProfile';
+import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
 
 const SearchPage = () => {
   const { profiles = [], loading, dispatch, fetchProfiles, fetchProfile } = useContext(
@@ -95,23 +98,24 @@ const SearchPage = () => {
           </div>
           <div css={stFilteringButtons}>
             <MinimalButton disabled>
-              <img src="filter.svg" width={22} alt="filter" />
+              <img src={filterIcon} width={22} alt="filter" />
             </MinimalButton>
             <MinimalButton onClick={handleSortAscending}>
-              <img src="./ascending.svg" width={22} alt="Sort ascending" />
+              <img src={ascendingIcon} width={22} alt="Sort ascending" />
             </MinimalButton>
             <MinimalButton onClick={handleSortDescending}>
-              <img src="./descending.svg" width={22} alt="Sort descending" />
+              <img src={descendingIcon} width={22} alt="Sort descending" />
             </MinimalButton>
           </div>
         </div>
         <div css={stCardContainer}>
           {loading ? (
             <>
-              <SkeletonProfile />
-              <SkeletonProfile />
-              <SkeletonProfile />
-              <SkeletonProfile />
+              <SkeletonThumbnail />
+              <SkeletonThumbnail />
+              <SkeletonThumbnail />
+              <SkeletonThumbnail />
+              <SkeletonThumbnail />
             </>
           ) : (
             profiles.map((profile) => (

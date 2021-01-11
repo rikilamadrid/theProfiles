@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { ProfileContext } from '../context/ProfilesContextProvider';
 import Button from '../components/Button';
-import SkeletonProfile from '../skeletons/SkeletonProfile';
+import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
@@ -35,13 +35,13 @@ const ProfilePage = ({ match }) => {
 
   useEffect(() => {
     const fetchingProfile = async () => {
+      setLoading(true);
       await fetchProfile(match.params.id);
+      setLoading(false);
     };
 
     if (history.action === 'POP' && !selectedProfile) {
-      setLoading(true);
       fetchingProfile();
-      setLoading(false);
     }
   }, [selectedProfile, history]);
 
@@ -49,7 +49,7 @@ const ProfilePage = ({ match }) => {
     <main css={stPageContainer}>
       <Button label="back" onClick={goBackHandler} />
       {loading ? (
-        <SkeletonProfile />
+        <SkeletonThumbnail />
       ) : (
         <>
           <img css={stImage} src={selectedProfile?.photoUrl} alt="selected date" />
