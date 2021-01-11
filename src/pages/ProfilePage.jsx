@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ProfileContext } from '../context/ProfilesContextProvider';
+
 import Button from '../components/Button';
-import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
+import SkeletonProfile from '../skeletons/SkeletonProfile';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
+
+import { capitalize } from '../utilities/stringFormatters';
 
 const ProfilePage = ({ match }) => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +29,30 @@ const ProfilePage = ({ match }) => {
   `;
 
   const stDetailsContainer = css`
+    display: flex;
     text-align: center;
+  `;
+
+  const stInfoContainer = css`
+    display: flex;
+    flex-direction: column;
+    text-align: initial;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  `;
+
+  const stName = css`
+    font-size: 20px;
+    font-weight: normal;
+    margin: 0.5rem;
+  `;
+
+  const stDetails = css`
+    margin: 0.5rem;
+  `;
+
+  const stButton = css`
+    align-self: flex-start;
   `;
 
   const goBackHandler = () => {
@@ -47,15 +73,18 @@ const ProfilePage = ({ match }) => {
 
   return (
     <main css={stPageContainer}>
-      <Button label="back" onClick={goBackHandler} />
+      <Button label="back" onClick={goBackHandler} style={stButton} />
       {loading ? (
-        <SkeletonThumbnail />
+        <SkeletonProfile />
       ) : (
         <>
-          <img css={stImage} src={selectedProfile?.photoUrl} alt="selected date" />
           <div css={stDetailsContainer}>
-            <h1>{selectedProfile?.handle}</h1>
-            <p>{selectedProfile?.age}</p>
+            <img css={stImage} src={selectedProfile?.photoUrl} alt="selected date" />
+            <div css={stInfoContainer}>
+              <h1 css={stName}>{`Name: ${capitalize(selectedProfile?.handle)}`}</h1>
+              <p css={stDetails}>{`Age: ${selectedProfile?.age}`}</p>
+              <p css={stDetails}>{`Location: ${capitalize(selectedProfile?.location)}`}</p>
+            </div>
           </div>
         </>
       )}

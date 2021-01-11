@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import { ProfileContext } from '../context/ProfilesContextProvider';
+
+import MinimalButton from '../components/MinimalButton';
+import Toggle from '../components/Toggle';
+import SearchCard from '../components/SearchCard';
+import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
 import ascendingIcon from '../assets/ascending.svg';
 import descendingIcon from '../assets/descending.svg';
 import filterIcon from '../assets/filter.svg';
 
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
-import MinimalButton from '../components/MinimalButton';
-import Toggle from '../components/Toggle';
-import SearchCard from '../components/SearchCard';
-import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
+
+import { capitalize } from '../utilities/stringFormatters';
 
 const SearchPage = () => {
   const { profiles = [], loading, dispatch, fetchProfiles, fetchProfile } = useContext(
@@ -122,8 +126,8 @@ const SearchPage = () => {
               <SearchCard
                 key={profile.id}
                 photoUrl={profile.photoUrl}
-                handle={profile.handle}
-                location={profile.location}
+                handle={capitalize(profile.handle)}
+                location={capitalize(profile.location)}
                 age={profile.age}
                 photoCount={profile.photoCount}
                 id={profile.id}

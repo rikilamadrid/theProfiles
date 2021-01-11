@@ -2,7 +2,7 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, style }) => {
   const stBackButton = css`
     border-radius: 8px;
     border: solid;
@@ -34,7 +34,7 @@ const Button = ({ label, onClick }) => {
   };
 
   return (
-    <button css={stBackButton} onClick={clickHandle}>
+    <button css={[stBackButton, style]} onClick={clickHandle}>
       {label}
     </button>
   );
