@@ -11,6 +11,7 @@ const SearchCard = ({
   photoCount = 0,
   id = '',
   onClick,
+  label,
 }) => {
   const stCardContainer = css`
     display: flex;
@@ -85,7 +86,7 @@ const SearchCard = ({
 
   return (
     <div css={stCardContainer}>
-      <button css={stCard} onClick={() => handleCardClick(id)}>
+      <button aria-label={label} css={stCard} onClick={() => handleCardClick(id)}>
         <div css={stAvatar}>
           <img src={photoUrl} alt="potential date"></img>
           <div css={stDashBoardContainer}>

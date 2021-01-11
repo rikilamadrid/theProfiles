@@ -9,6 +9,12 @@
 
 Github repo url.
 
+The code for the Solution: [Link for the repo](https://github.com/rikilamadrid/theProfiles.git)
+
+## `npm run dev`
+
+Runs client and server concurrently
+
 ## Getting started
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

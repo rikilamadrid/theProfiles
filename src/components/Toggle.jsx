@@ -71,7 +71,7 @@ const Toggle = ({ label, onChange, checked }) => {
 
   return (
     <label css={[stToggle, stLabel]}>
-      <input type="checkbox" checked={!!checkedStatus} onChange={changeHandle} />
+      <input type="checkbox" checked={checkedStatus} onChange={changeHandle} />
       {label && <span css={stLabel}>{label}</span>}
       <span className="toggle"></span>
     </label>

@@ -34,7 +34,7 @@ const Button = ({ label, onClick, style }) => {
   };
 
   return (
-    <button css={[stBackButton, style]} onClick={clickHandle}>
+    <button css={[stBackButton, style]} onClick={clickHandle} aria-label={label}>
       {label}
     </button>
   );

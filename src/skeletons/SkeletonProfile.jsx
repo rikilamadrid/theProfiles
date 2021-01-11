@@ -31,13 +31,6 @@ const SkeletonProfile = () => {
     align-items: center;
   `;
 
-  const stSkeletonAvatar = css`
-    background-color: #ddd;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  `;
-
   const stSkeletonTitle = css`
     animation: ${glow} 2s infinite;
     background-color: #ddd;

@@ -2,7 +2,7 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react';
 
-const MinimalButton = ({ children, onClick, style, ...props }) => {
+const MinimalButton = ({ label, children, onClick, style, ...props }) => {
   const stButton = css`
     background: transparent;
     border: 0;
@@ -10,7 +10,7 @@ const MinimalButton = ({ children, onClick, style, ...props }) => {
     margin: 8px;
   `;
   return (
-    <button {...props} onClick={onClick} css={[stButton, style]}>
+    <button {...props} aria-label={label} onClick={onClick} css={[stButton, style]}>
       {children}
     </button>
   );

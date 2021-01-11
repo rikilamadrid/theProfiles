@@ -25,14 +25,6 @@ const SearchPage = () => {
   const counterRef = useRef();
   let history = useHistory();
 
-  const handleSortAscending = () => {
-    dispatch({ type: 'ascending' });
-  };
-
-  const handleSortDescending = () => {
-    dispatch({ type: 'descending' });
-  };
-
   const stMainContainer = css`
     margin: 24px;
   `;
@@ -59,7 +51,15 @@ const SearchPage = () => {
     history.push(`profiles/${id}`);
   };
 
-  const onChangeHandler = () => {
+  const handleSortAscending = () => {
+    dispatch({ type: 'ascending' });
+  };
+
+  const handleSortDescending = () => {
+    dispatch({ type: 'descending' });
+  };
+
+  const handleToggle = () => {
     setCounter(10);
     setEnableCounter((prevState) => !prevState);
     clearInterval(counterRef.current);
@@ -67,10 +67,10 @@ const SearchPage = () => {
 
   const setFetchInterval = () => {
     if (enableCounter === true) {
-      function tick() {
+      const countDown = () => {
         setCounter((prevState) => prevState - 1);
-      }
-      counterRef.current = setInterval(() => tick(), 1000);
+      };
+      counterRef.current = setInterval(() => countDown(), 1000);
     }
   };
 
@@ -98,16 +98,16 @@ const SearchPage = () => {
         <div css={stKeypad}>
           <div>
             {counter}
-            <Toggle label="Re-fetch" checked={enableCounter} onChange={onChangeHandler} />
+            <Toggle label="Re-fetch" checked={enableCounter} onChange={handleToggle} />
           </div>
           <div css={stFilteringButtons}>
-            <MinimalButton disabled>
+            <MinimalButton label="filter" disabled>
               <img src={filterIcon} width={22} alt="filter" />
             </MinimalButton>
-            <MinimalButton onClick={handleSortAscending}>
+            <MinimalButton label="Sort ascending" onClick={handleSortAscending}>
               <img src={ascendingIcon} width={22} alt="Sort ascending" />
             </MinimalButton>
-            <MinimalButton onClick={handleSortDescending}>
+            <MinimalButton label="Sort descending" onClick={handleSortDescending}>
               <img src={descendingIcon} width={22} alt="Sort descending" />
             </MinimalButton>
           </div>
@@ -132,6 +132,7 @@ const SearchPage = () => {
                 photoCount={profile.photoCount}
                 id={profile.id}
                 onClick={handleProfileClick}
+                label={`Profile for ${profile.handle}`}
               />
             ))
           )}

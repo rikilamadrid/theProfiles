@@ -55,25 +55,25 @@ const ProfilePage = ({ match }) => {
     align-self: flex-start;
   `;
 
-  const goBackHandler = () => {
+  const handleGoBack = () => {
     history.goBack();
   };
 
   useEffect(() => {
-    const fetchingProfile = async () => {
+    const reFetchProfile = async () => {
       setLoading(true);
       await fetchProfile(match.params.id);
       setLoading(false);
     };
 
     if (history.action === 'POP' && !selectedProfile) {
-      fetchingProfile();
+      reFetchProfile();
     }
   }, [selectedProfile, history]);
 
   return (
     <main css={stPageContainer}>
-      <Button label="back" onClick={goBackHandler} style={stButton} />
+      <Button label="back" onClick={handleGoBack} style={stButton} />
       {loading ? (
         <SkeletonProfile />
       ) : (
