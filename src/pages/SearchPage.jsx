@@ -117,7 +117,7 @@ const SearchPage = () => {
 
   return (
     <div>
-      {true ? (
+      {error ? (
         <Error404 message={error} />
       ) : (
         <main css={stMainContainer}>
