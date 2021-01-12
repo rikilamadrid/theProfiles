@@ -17,11 +17,19 @@ import { css, jsx } from '@emotion/react';
 import { capitalize } from '../utilities/stringFormatters';
 
 const SearchPage = () => {
-  const { profiles = [], loading, dispatch, fetchProfiles, fetchProfile } = useContext(
-    ProfileContext
-  );
+  const {
+    profiles = [],
+    filteredProfiles,
+    loading,
+    dispatch,
+    fetchProfiles,
+    fetchProfile,
+    sortByAscending,
+    sortByDescending,
+  } = useContext(ProfileContext);
   const [counter, setCounter] = useState(10);
   const [enableCounter, setEnableCounter] = useState(true);
+  const [toggleFilter, setToggleFilter] = useState(false);
   const counterRef = useRef();
   let history = useHistory();
 
@@ -52,11 +60,15 @@ const SearchPage = () => {
   };
 
   const handleSortAscending = () => {
-    dispatch({ type: 'ascending' });
+    sortByAscending();
   };
 
   const handleSortDescending = () => {
-    dispatch({ type: 'descending' });
+    sortByDescending();
+  };
+
+  const handleFilter = () => {
+    setToggleFilter((prevState) => !prevState);
   };
 
   const handleToggle = () => {
@@ -72,6 +84,23 @@ const SearchPage = () => {
       };
       counterRef.current = setInterval(() => countDown(), 1000);
     }
+  };
+
+  const renderContent = () => {
+    let profilesToRender = !toggleFilter ? profiles : filteredProfiles;
+    return profilesToRender.map((profile) => (
+      <SearchCard
+        key={profile.id}
+        photoUrl={profile.photoUrl}
+        handle={capitalize(profile.handle)}
+        location={capitalize(profile.location)}
+        age={profile.age}
+        photoCount={profile.photoCount}
+        id={profile.id}
+        onClick={handleProfileClick}
+        label={`Profile for ${profile.handle}`}
+      />
+    ));
   };
 
   useEffect(() => {
@@ -101,7 +130,7 @@ const SearchPage = () => {
             <Toggle label="Re-fetch" checked={enableCounter} onChange={handleToggle} />
           </div>
           <div css={stFilteringButtons}>
-            <MinimalButton label="filter" disabled>
+            <MinimalButton label="filter" onClick={handleFilter}>
               <img src={filterIcon} width={22} alt="filter" />
             </MinimalButton>
             <MinimalButton label="Sort ascending" onClick={handleSortAscending}>
@@ -122,19 +151,7 @@ const SearchPage = () => {
               <SkeletonThumbnail />
             </>
           ) : (
-            profiles.map((profile) => (
-              <SearchCard
-                key={profile.id}
-                photoUrl={profile.photoUrl}
-                handle={capitalize(profile.handle)}
-                location={capitalize(profile.location)}
-                age={profile.age}
-                photoCount={profile.photoCount}
-                id={profile.id}
-                onClick={handleProfileClick}
-                label={`Profile for ${profile.handle}`}
-              />
-            ))
+            renderContent()
           )}
         </div>
       </main>
