@@ -8,12 +8,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/profiles/:id', (req, res) => {
-  const profile = profiles.find((profile) => profile.id == req.params.id)
-  res.json(profile);
+  const profile = profiles.find((profile) => profile.id == req.params.id);
+  if (profile === undefined) {
+    res.status(404);
+    res.json({
+      message: 'Oops something went wrong, please try again later.',
+    });
+  } else {
+    res.json(profile);
+  }
 });
 
 app.get('/api/profiles', (req, res) => {
-  res.json(profiles);
+  if (profiles === undefined) {
+    res.status(404);
+    res.json({
+      message: 'Oops something went wrong, please try again later.',
+    });
+  } else {
+    res.json(profiles);
+  }
 });
 
 app.listen(5555, console.log('Server running on port 5555'));

@@ -5,7 +5,9 @@ import {
   FETCH_PROFILES_BEGINS,
   FETCH_PROFILES_SUCCESS,
   FETCH_PROFILES_FAILURE,
-  FETCH_PROFILE,
+  FETCH_PROFILE_BEGINS,
+  FETCH_PROFILE_SUCCESS,
+  FETCH_PROFILE_FAILURE,
 } from './constants/profileConstants';
 import axios from 'axios';
 
@@ -46,9 +48,18 @@ function ProfilesReducer(state, action) {
       error = action.payload;
       return { ...state, loading, error };
 
-    case FETCH_PROFILE:
+    case FETCH_PROFILE_BEGINS:
+      loading = true;
+      return { ...state, loading };
+
+    case FETCH_PROFILE_SUCCESS:
       selectedProfile = action.payload;
       return { ...state, selectedProfile };
+
+    case FETCH_PROFILE_FAILURE:
+      loading = false;
+      error = action.payload;
+      return { ...state, loading, error };
 
     default:
       throw new Error();
@@ -59,22 +70,30 @@ const ProfilesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(ProfilesReducer, {
     profiles: [],
     loading: true,
+    error: null,
     selectedProfile: null,
   });
 
   // Gets all the profiles
   const fetchProfiles = async () => {
-    dispatch({ type: FETCH_PROFILES_BEGINS });
-    const { data } = await axios.get('/api/profiles');
-    // Error handling
-    dispatch({ type: FETCH_PROFILES_SUCCESS, payload: data });
+    try {
+      dispatch({ type: FETCH_PROFILES_BEGINS });
+      const { data } = await axios.get('/api/profiles');
+      dispatch({ type: FETCH_PROFILES_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: FETCH_PROFILES_FAILURE, payload: error.response.data.message });
+    }
   };
 
   // Gets a profiles by id
   const fetchProfile = async (id) => {
-    const { data } = await axios.get(`/api/profiles/${id}`);
-    // error handling
-    dispatch({ type: FETCH_PROFILE, payload: data });
+    try {
+      dispatch({ type: FETCH_PROFILE_BEGINS });
+      const { data } = await axios.get(`/api/profiles/${id}`);
+      dispatch({ type: FETCH_PROFILE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: FETCH_PROFILE_FAILURE, payload: error.response.data.message });
+    }
   };
 
   // Sort by ascending order

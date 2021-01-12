@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ProfileContext } from '../context/ProfilesContextProvider';
 
 import MinimalButton from '../components/MinimalButton';
+import Error404 from '../components/Error404';
 import Toggle from '../components/Toggle/Toggle';
 import SearchCard from '../components/SearchCard';
 import SkeletonThumbnail from '../skeletons/SkeletonThumbnail';
@@ -20,6 +21,7 @@ const SearchPage = () => {
   const {
     profiles = [],
     filteredProfiles,
+    error,
     loading,
     dispatch,
     fetchProfiles,
@@ -28,6 +30,7 @@ const SearchPage = () => {
     sortByDescending,
   } = useContext(ProfileContext);
   const [counter, setCounter] = useState(10);
+  const [profilesToRender, setProfilesToRender] = useState([]);
   const [enableCounter, setEnableCounter] = useState(true);
   const [toggleFilter, setToggleFilter] = useState(false);
   const counterRef = useRef();
@@ -86,22 +89,9 @@ const SearchPage = () => {
     }
   };
 
-  const renderContent = () => {
-    let profilesToRender = !toggleFilter ? profiles : filteredProfiles;
-    return profilesToRender.map((profile) => (
-      <SearchCard
-        key={profile.id}
-        photoUrl={profile.photoUrl}
-        handle={capitalize(profile.handle)}
-        location={capitalize(profile.location)}
-        age={profile.age}
-        photoCount={profile.photoCount}
-        id={profile.id}
-        onClick={handleProfileClick}
-        label={`Profile for ${profile.handle}`}
-      />
-    ));
-  };
+  useEffect(() => {
+    setProfilesToRender(profiles);
+  }, [profiles]);
 
   useEffect(() => {
     if (history.action === 'POP') {
@@ -121,40 +111,60 @@ const SearchPage = () => {
     }
   }, [counter, fetchProfiles]);
 
+  useEffect(() => {
+    setProfilesToRender(!toggleFilter ? profiles : filteredProfiles);
+  }, [toggleFilter]);
+
   return (
     <div>
-      <main css={stMainContainer}>
-        <div css={stKeypad}>
-          <div>
-            {counter}
-            <Toggle label="Re-fetch" checked={enableCounter} onChange={handleToggle} />
+      {true ? (
+        <Error404 message={error} />
+      ) : (
+        <main css={stMainContainer}>
+          <div css={stKeypad}>
+            <div>
+              {counter}
+              <Toggle label="Re-fetch" checked={enableCounter} onChange={handleToggle} />
+            </div>
+            <div css={stFilteringButtons}>
+              <MinimalButton label="filter" onClick={handleFilter}>
+                <img src={filterIcon} width={22} alt="filter" />
+              </MinimalButton>
+              <MinimalButton label="Sort ascending" onClick={handleSortAscending}>
+                <img src={ascendingIcon} width={22} alt="Sort ascending" />
+              </MinimalButton>
+              <MinimalButton label="Sort descending" onClick={handleSortDescending}>
+                <img src={descendingIcon} width={22} alt="Sort descending" />
+              </MinimalButton>
+            </div>
           </div>
-          <div css={stFilteringButtons}>
-            <MinimalButton label="filter" onClick={handleFilter}>
-              <img src={filterIcon} width={22} alt="filter" />
-            </MinimalButton>
-            <MinimalButton label="Sort ascending" onClick={handleSortAscending}>
-              <img src={ascendingIcon} width={22} alt="Sort ascending" />
-            </MinimalButton>
-            <MinimalButton label="Sort descending" onClick={handleSortDescending}>
-              <img src={descendingIcon} width={22} alt="Sort descending" />
-            </MinimalButton>
+          <div css={stCardContainer}>
+            {loading ? (
+              <>
+                <SkeletonThumbnail />
+                <SkeletonThumbnail />
+                <SkeletonThumbnail />
+                <SkeletonThumbnail />
+                <SkeletonThumbnail />
+              </>
+            ) : (
+              profilesToRender.map((profile) => (
+                <SearchCard
+                  key={profile.id}
+                  photoUrl={profile.photoUrl}
+                  handle={capitalize(profile.handle)}
+                  location={capitalize(profile.location)}
+                  age={profile.age}
+                  photoCount={profile.photoCount}
+                  id={profile.id}
+                  onClick={handleProfileClick}
+                  label={`Profile for ${profile.handle}`}
+                />
+              ))
+            )}
           </div>
-        </div>
-        <div css={stCardContainer}>
-          {loading ? (
-            <>
-              <SkeletonThumbnail />
-              <SkeletonThumbnail />
-              <SkeletonThumbnail />
-              <SkeletonThumbnail />
-              <SkeletonThumbnail />
-            </>
-          ) : (
-            renderContent()
-          )}
-        </div>
-      </main>
+        </main>
+      )}
     </div>
   );
 };
