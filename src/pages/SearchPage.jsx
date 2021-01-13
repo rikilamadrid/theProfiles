@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { ProfileContext } from '../context/ProfilesContextProvider';
+import { ProfileContext } from '../store/ProfilesContextProvider';
 
 import MinimalButton from '../components/MinimalButton';
 import Error404 from '../components/Error404';
@@ -31,9 +31,11 @@ const SearchPage = () => {
     sortByDescending,
     lessThan30,
   } = useContext(ProfileContext);
+
   const [counter, setCounter] = useState(10);
   const [profilesToRender, setProfilesToRender] = useState([]);
   const [enableCounter, setEnableCounter] = useState(true);
+
   const counterRef = useRef();
   let history = useHistory();
 
@@ -89,10 +91,6 @@ const SearchPage = () => {
       counterRef.current = setInterval(() => countDown(), 1000);
     }
   };
-
-  useEffect(() => {
-    setProfilesToRender(profiles);
-  }, [profiles]);
 
   useEffect(() => {
     if (history.action === 'POP') {

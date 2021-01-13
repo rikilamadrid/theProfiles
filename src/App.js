@@ -2,7 +2,7 @@ import React from 'react';
 import SearchPage from './pages/SearchPage';
 import ProfilePage from './pages/ProfilePage';
 import Header from './components/Header';
-import ProfilesContextProvider from './context/ProfilesContextProvider';
+import ProfilesContextProvider from './store/ProfilesContextProvider';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './styles.css';
 

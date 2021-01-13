@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { ProfileContext } from '../context/ProfilesContextProvider';
+import { ProfileContext } from '../store/ProfilesContextProvider';
 
 import Button from '../components/Button/Button';
 import Error404 from '../components/Error404';
@@ -13,8 +13,10 @@ import { css, jsx } from '@emotion/react';
 import { capitalize } from '../utilities/stringFormatters';
 
 const ProfilePage = ({ match }) => {
-  const [loading, setLoading] = useState(false);
   const { selectedProfile, dispatch, error, fetchProfile } = useContext(ProfileContext);
+
+  const [loading, setLoading] = useState(false);
+
   let history = useHistory();
 
   const stPageContainer = css`
