@@ -21,6 +21,7 @@ const SearchPage = () => {
   const {
     profiles = [],
     filteredProfiles,
+    isFiltered,
     error,
     loading,
     dispatch,
@@ -28,11 +29,11 @@ const SearchPage = () => {
     fetchProfile,
     sortByAscending,
     sortByDescending,
+    lessThan30,
   } = useContext(ProfileContext);
   const [counter, setCounter] = useState(10);
   const [profilesToRender, setProfilesToRender] = useState([]);
   const [enableCounter, setEnableCounter] = useState(true);
-  const [toggleFilter, setToggleFilter] = useState(false);
   const counterRef = useRef();
   let history = useHistory();
 
@@ -63,15 +64,15 @@ const SearchPage = () => {
   };
 
   const handleSortAscending = () => {
-    sortByAscending();
+    sortByAscending(isFiltered);
   };
 
   const handleSortDescending = () => {
-    sortByDescending();
+    sortByDescending(isFiltered);
   };
 
   const handleFilter = () => {
-    setToggleFilter((prevState) => !prevState);
+    lessThan30(!isFiltered);
   };
 
   const handleToggle = () => {
@@ -112,8 +113,9 @@ const SearchPage = () => {
   }, [counter, fetchProfiles]);
 
   useEffect(() => {
-    setProfilesToRender(!toggleFilter ? profiles : filteredProfiles);
-  }, [toggleFilter]);
+    console.log('lamadrid isFiltered', isFiltered);
+    setProfilesToRender(!isFiltered ? profiles : filteredProfiles);
+  }, [isFiltered, profiles, filteredProfiles]);
 
   return (
     <div>

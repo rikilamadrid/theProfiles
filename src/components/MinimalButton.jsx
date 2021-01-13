@@ -8,6 +8,7 @@ const MinimalButton = ({ label, children, onClick, style, ...props }) => {
     border: 0;
     cursor: pointer;
     margin: 8px;
+    outline: none;
   `;
   return (
     <button {...props} aria-label={label} onClick={onClick} css={[stButton, style]}>

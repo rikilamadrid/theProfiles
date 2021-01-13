@@ -8,6 +8,7 @@ import {
   FETCH_PROFILE_BEGINS,
   FETCH_PROFILE_SUCCESS,
   FETCH_PROFILE_FAILURE,
+  LESS_THAN_30,
 } from './constants/profileConstants';
 import axios from 'axios';
 
@@ -21,17 +22,30 @@ function ProfilesReducer(state, action) {
   let selectedProfile;
   let error;
   let filteredProfiles;
+  let isFiltered;
 
   switch (action.type) {
     case SORT_ASCENDING:
+      isFiltered = action.payload;
       profiles = [...state.profiles];
+      filteredProfiles = [...state.filteredProfiles];
+
+      filteredProfiles.sort((profileA, profileB) => (profileA.handle > profileB.handle ? 1 : -1));
       profiles.sort((profileA, profileB) => (profileA.handle > profileB.handle ? 1 : -1));
-      return { ...state, profiles };
+      return { ...state, profiles, filteredProfiles, isFiltered };
 
     case SORT_DESCENDING:
+      isFiltered = action.payload;
       profiles = [...state.profiles];
+      filteredProfiles = [...state.filteredProfiles];
+
+      filteredProfiles.sort((profileA, profileB) => (profileA.handle < profileB.handle ? 1 : -1));
       profiles.sort((profileA, profileB) => (profileA.handle < profileB.handle ? 1 : -1));
-      return { ...state, profiles };
+      return { ...state, profiles, filteredProfiles, isFiltered };
+
+    case LESS_THAN_30:
+      isFiltered = action.payload;
+      return { ...state, isFiltered };
 
     case FETCH_PROFILES_BEGINS:
       loading = true;
@@ -72,6 +86,7 @@ const ProfilesContextProvider = ({ children }) => {
     loading: true,
     error: null,
     selectedProfile: null,
+    isFiltered: false,
   });
 
   // Gets all the profiles
@@ -85,7 +100,7 @@ const ProfilesContextProvider = ({ children }) => {
     }
   };
 
-  // Gets a profiles by id
+  // Gets a profile by id
   const fetchProfile = async (id) => {
     try {
       dispatch({ type: FETCH_PROFILE_BEGINS });
@@ -97,13 +112,19 @@ const ProfilesContextProvider = ({ children }) => {
   };
 
   // Sort by ascending order
-  const sortByAscending = () => {
-    dispatch({ type: SORT_ASCENDING });
+  const sortByAscending = (toggleFilter) => {
+    console.log('lamadrid state', state);
+    dispatch({ type: SORT_ASCENDING, payload: toggleFilter });
   };
 
   // Sort by descending order
-  const sortByDescending = () => {
-    dispatch({ type: SORT_DESCENDING });
+  const sortByDescending = (toggleFilter) => {
+    dispatch({ type: SORT_DESCENDING, payload: toggleFilter });
+  };
+
+  // Show less than 30 years old
+  const lessThan30 = (isFiltered) => {
+    dispatch({ type: LESS_THAN_30, payload: isFiltered });
   };
 
   useEffect(() => {
@@ -119,6 +140,7 @@ const ProfilesContextProvider = ({ children }) => {
         fetchProfile,
         sortByAscending,
         sortByDescending,
+        lessThan30,
       }}
     >
       {children}
