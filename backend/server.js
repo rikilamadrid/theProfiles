@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/profiles/:id', (req, res) => {
   const profile = profiles.find((profile) => profile.id == req.params.id);
-  if (profile === undefined) {
+  if (!profile) {
     res.status(404);
     res.json({
       message: 'Oops something went wrong, please try again later.',
@@ -20,7 +20,7 @@ app.get('/api/profiles/:id', (req, res) => {
 });
 
 app.get('/api/profiles', (req, res) => {
-  if (profiles === undefined) {
+  if (!profiles) {
     res.status(404);
     res.json({
       message: 'Oops something went wrong, please try again later.',
